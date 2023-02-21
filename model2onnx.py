@@ -12,6 +12,7 @@ print("pytorch:", torch.__version__)
 # print("onnxruntime device:", ort.get_device())
 print("transformers:", transformers.__version__)
 
+# BERT_PATH = 'bert-base-uncased'
 BERT_PATH = 'bert-base-uncased'
 
 
@@ -36,10 +37,11 @@ def model_test(model, tokenizer, text):
     # save inputs and output
     print("Saving inputs and output to case_data.npz ...")
     position_ids = torch.arange(0, encoded_input['input_ids'].shape[1]).int().view(1, -1)
-    print(position_ids)
+    print("===> position_ids: ", position_ids)
     input_ids=encoded_input['input_ids'].int().detach().numpy()
+    print("===> input_ids: ", input_ids)
     token_type_ids=encoded_input['token_type_ids'].int().detach().numpy()
-    print(input_ids.shape)
+    print("===> token_type_ids: ", token_type_ids)
 
     # save data
     npz_file = BERT_PATH + '/case_data.npz'
@@ -50,7 +52,6 @@ def model_test(model, tokenizer, text):
              logits=output[0].detach().numpy())
 
     data = np.load(npz_file)
-    print(data['input_ids'])
 
 def model2onnx(model, tokenizer, text):
     print("===================model2onnx=======================")
@@ -59,7 +60,7 @@ def model2onnx(model, tokenizer, text):
 
     # convert model to onnx
     model.eval()
-    export_model_path = BERT_PATH + "/model.onnx"
+    export_model_path = "onnx/model.onnx"
     opset_version = 12
     symbolic_names = {0: 'batch_size', 1: 'max_seq_len'}
     torch.onnx.export(model,                                            # model being run
@@ -72,8 +73,8 @@ def model2onnx(model, tokenizer, text):
                                    'token_type_ids'],
                     output_names=['logits'],                    # the model's output names
                     dynamic_axes={'input_ids': symbolic_names,        # variable length axes
-                                  'attention_mask' : symbolic_names,
                                   'token_type_ids' : symbolic_names,
+                                  'attention_mask' : symbolic_names,
                                   'logits' : symbolic_names})
     print("Model exported at ", export_model_path)
 

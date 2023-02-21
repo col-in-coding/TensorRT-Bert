@@ -25,14 +25,14 @@ import transformers
 """
 TensorRT Initialization
 """
-TRT_LOGGER = trt.Logger(trt.Logger.VERBOSE)
-# TRT_LOGGER = trt.Logger(trt.Logger.INFO)
+# TRT_LOGGER = trt.Logger(trt.Logger.VERBOSE)
+TRT_LOGGER = trt.Logger(trt.Logger.INFO)
 
-handle = ctypes.CDLL("libnvinfer_plugin.so", mode=ctypes.RTLD_GLOBAL)
-if not handle:
-    raise RuntimeError("Could not load plugin library. Is `libnvinfer_plugin.so` on your LD_LIBRARY_PATH?")
+# handle = ctypes.CDLL("libnvinfer_plugin.so", mode=ctypes.RTLD_GLOBAL)
+# if not handle:
+#     raise RuntimeError("Could not load plugin library. Is `libnvinfer_plugin.so` on your LD_LIBRARY_PATH?")
 
-handle = ctypes.CDLL("LayerNorm.so", mode=ctypes.RTLD_GLOBAL)
+handle = ctypes.CDLL("/workspace/Github/TensorRT-Bert/LayerNormPlugin/LayerNorm.so", mode=ctypes.RTLD_GLOBAL)
 if not handle:
     raise RuntimeError("Could not load plugin library. Is `LayerNorm.so` on your LD_LIBRARY_PATH?")
 
@@ -84,20 +84,24 @@ def custom_fc(config, network, input_tensor, out_dims, W):
 def self_attention_layer(network_helper, prefix, config, weights_dict, input_tensor, imask):
     num_heads = config.num_attention_heads
     head_size = config.head_size
-
     q_w = weights_dict[prefix + "attention_self_query_kernel"]
+    # print("==> l0_attention_self_query_kernel: ", q_w)
+    # exit(0)
     q_b = weights_dict[prefix + "attention_self_query_bias"]
+    q_w = np.transpose(q_w)
     q = network_helper.addLinear(input_tensor, q_w, q_b)
     q = network_helper.addShuffle(q, None, (0, -1, num_heads, head_size), (0, 2, 1, 3), "att_q_view_transpose")
 
     k_w = weights_dict[prefix + "attention_self_key_kernel"]
     k_b = weights_dict[prefix + "attention_self_key_bias"]
+    k_w = np.transpose(k_w)
     k = network_helper.addLinear(input_tensor, k_w, k_b)
     k = network_helper.addShuffle(k, None, (0, -1, num_heads, head_size), (0, 2, 3, 1), "att_k_view_and transpose")
     # k = network_helper.addShuffle(k, None, (0, -1, self.h, self.d_k), (0, 2, 3, 1), "att_k_view_and transpose")
 
     v_w = weights_dict[prefix + "attention_self_value_kernel"]
     v_b = weights_dict[prefix + "attention_self_value_bias"]
+    v_w = np.transpose(v_w)
     v = network_helper.addLinear(input_tensor, v_w, v_b)
     v = network_helper.addShuffle(v, None, (0, -1, num_heads, head_size), (0, 2, 1, 3), "att_v_view_and transpose")
 
@@ -117,8 +121,8 @@ def self_output_layer(network_helper, prefix, config, weights_dict, hidden_state
 
     out_w = weights_dict[prefix + "attention_output_dense_kernel"]
     out_b = weights_dict[prefix + "attention_output_dense_bias"]
+    out_w = np.transpose(out_w)
     out = network_helper.addLinear(hidden_states, out_w, out_b)
-
     out = network_helper.addAdd(out, input_tensor)
 
     gamma = weights_dict[prefix + "attention_output_layernorm_gamma"]
@@ -135,17 +139,24 @@ def attention_layer(network_helper, prefix, config, weights_dict, input_tensor, 
     return out
 
 
-def transformer_layer(network_helper, prefix, config, weights_dict, input_tensor, imask):
+def transformer_layer(network_helper, prefix, config, weights_dict, input_tensor, imask, layer):
     num_heads = config.num_attention_heads
     head_size = config.head_size
+
+    # print(f"===> num_heads: {num_heads}, head_size: {head_size}")
+    # exit(0)
 
     attention_output = attention_layer(network_helper, prefix, config, weights_dict, input_tensor, imask)
 
     # BertIntermediate
     intermediate_w = weights_dict[prefix + "intermediate_dense_kernel"]
-    intermediate_w = np.transpose(intermediate_w)
     intermediate_b = weights_dict[prefix + "intermediate_dense_bias"]
-    intermediate_output = network_helper.addLinear(attention_output, intermediate_w, intermediate_b)
+    intermediate_w = np.transpose(intermediate_w)
+    intermediate_output = network_helper.addLinear(attention_output, intermediate_w, intermediate_b, flag=layer==0)
+
+    # # FOR DEBUG
+    # if layer == 0:
+    #     network_helper.markOutput(intermediate_output)
 
     intermediate_output = network_helper.addGELU(intermediate_output)
 
@@ -159,6 +170,7 @@ def transformer_layer(network_helper, prefix, config, weights_dict, input_tensor
 
     gamma = weights_dict[prefix + "output_layernorm_gamma"]
     beta = weights_dict[prefix + "output_layernorm_beta"]
+    # print("===> ", prefix + "output_layernorm_beta")
     layer_output = network_helper.addLayerNorm(layer_output, gamma, beta)
 
     return layer_output
@@ -194,8 +206,10 @@ def bert_model(network_helper, config, weights_dict, input_tensor, input_mask):
     prev_input = input_tensor
     for layer in range(0, config.num_hidden_layers):
         ss = "l{}_".format(layer)
-        prev_input = transformer_layer(network_helper, ss, config,  weights_dict, prev_input, input_mask)
-
+        prev_input = transformer_layer(network_helper, ss, config,  weights_dict, prev_input, input_mask, layer)
+        # # FOR DEBUG
+        # if layer == 0:
+        #     network_helper.markOutput(prev_input)
     return prev_input
 
 
@@ -252,22 +266,29 @@ def load_onnx_weights_and_quant(path, config):
 
     tensor_dict = {}
     for w in weights:
+
         if "position_ids" in w.name:
             continue
 
         a = onnx_to_trt_name(w.name)
         # print(w.name + " " + str(w.dims))
-        print(a + " " + str(w.dims))
+        # print(a + " " + str(w.dims))
         b = np.frombuffer(w.raw_data, np.float32).reshape(w.dims)
+        # if w.name == "bert.encoder.layer.0.attention.self.query.weight":
+        #     # l0_attention_self_query_kernel
+        #     print("found!!")
+        #     print('===> l0_attention_self_query_kernel', b)
+        #     # exit(0)
         tensor_dict[a] = b
 
     weights_dict = tensor_dict
-
+    # exit(0)
     TRT_LOGGER.log(TRT_LOGGER.INFO, "Found {:} entries in weight map".format(len(weights_dict)))
     return weights_dict
 
 def emb_layernorm(network_helper, config, weights_dict, builder_config, sequence_lengths, batch_sizes):
     # int8 only support some of the sequence length, we dynamic on sequence length is not allowed.
+    # 定义网络输入
     input_ids = network_helper.addInput(name="input_ids", dtype=trt.int32, shape=(1, -1))
     token_type_ids = network_helper.addInput(name="token_type_ids", dtype=trt.int32, shape=(1, -1))
     position_ids = network_helper.addInput(name="position_ids", dtype=trt.int32, shape=(1, -1))
@@ -275,7 +296,11 @@ def emb_layernorm(network_helper, config, weights_dict, builder_config, sequence
     word_embeddings = weights_dict["embeddings_word_embeddings"]
     position_embeddings = weights_dict["embeddings_position_embeddings"]
     token_type_embeddings = weights_dict["embeddings_token_type_embeddings"]
-    print(word_embeddings)
+
+    # print("===> word_embeddings: ", word_embeddings.shape)
+    # print("===> token_type_embeddings: ", token_type_embeddings.shape)
+    # print("===> position_embeddings: ", position_embeddings.shape)
+    # exit(0)
 
     input_embeds = network_helper.addEmbedding(input_ids, word_embeddings)
     token_type_embeds = network_helper.addEmbedding(token_type_ids, token_type_embeddings)
@@ -288,6 +313,9 @@ def emb_layernorm(network_helper, config, weights_dict, builder_config, sequence
     beta = weights_dict["embeddings_layernorm_beta"]
     out = network_helper.addLayerNorm(embeddings, gamma, beta)
 
+    # for i in range(network_helper.network.num_layers):
+    #     print(network_helper.network.get_layer(i).name)
+    # exit(0)
     return out
 
 def build_engine(workspace_size, config, weights_dict, vocab_file, calibrationCacheFile, calib_num):
@@ -296,6 +324,7 @@ def build_engine(workspace_size, config, weights_dict, vocab_file, calibrationCa
     max_seq_length = 200
     with trt.Builder(TRT_LOGGER) as builder, builder.create_network(explicit_batch_flag) as network, builder.create_builder_config() as builder_config:
         builder_config.max_workspace_size = workspace_size * (1024 * 1024)
+
         if config.use_fp16:
             builder_config.set_flag(trt.BuilderFlag.FP16)
 
@@ -318,12 +347,12 @@ def build_engine(workspace_size, config, weights_dict, vocab_file, calibrationCa
 
         # Create the network
         embeddings = emb_layernorm(network_helper, config, weights_dict, builder_config, None, None)
+        # network_helper.markOutput(embeddings)
 
         bert_out = bert_model(network_helper, config, weights_dict, embeddings, None)
         # network_helper.markOutput(bert_out)
 
         cls_output = transformer_output_layer(network_helper, config, weights_dict, bert_out)
-
         network_helper.markOutput(cls_output)
 
         profile = builder.create_optimization_profile()
@@ -373,17 +402,20 @@ def test_text(infer_helper, BERT_PATH):
     text = "The capital of France, " + tokenizer.mask_token + ", contains the Eiffel Tower."
     encoded_input = tokenizer.encode_plus(text, return_tensors = "pt")
     mask_index = torch.where(encoded_input["input_ids"][0] == tokenizer.mask_token_id)
-
     input_ids = encoded_input['input_ids'].int().detach().numpy()
     token_type_ids = encoded_input['token_type_ids'].int().detach().numpy()
     position_ids = torch.arange(0, encoded_input['input_ids'].shape[1]).int().view(1, -1).numpy()
     input_list = [input_ids, token_type_ids, position_ids]
 
     output = infer_helper.infer(input_list)
-    print(output)
+
+    # debug = output[0]
+    # debug2 = np.load("debug.npy")
+    # res = np.allclose(debug, debug2, 1e-02, 1e-02)
+    # print("===> debug compare res: ", res)
+    # exit(0)
 
     logits = torch.from_numpy(output[0])
-
     softmax = F.softmax(logits, dim = -1)
     mask_word = softmax[0, mask_index, :]
     top_10 = torch.topk(mask_word, 10, dim = 1)[1][0]
@@ -400,26 +432,26 @@ def test_case_data(infer_helper, case_data_path):
     input_ids = case_data['input_ids']
     token_type_ids = case_data['token_type_ids']
     position_ids = case_data['position_ids']
-    print(input_ids)
-    print(input_ids.shape)
-    print(token_type_ids)
-    print(position_ids)
+
+    # print("===> attention_mask: ", attention_mask)
+    # print("===> token_type_ids: ", token_type_ids)
+    # exit(0)
 
     logits_output = case_data['logits']
 
     trt_outputs = infer_helper.infer([input_ids, token_type_ids, position_ids])
-    trt_outputs = infer_helper.infer([input_ids, token_type_ids, position_ids])
+
     # infer_helper.infer([input_ids], [output_start])
 
-    rtol = 1e-02
-    atol = 1e-02
+    rtol = 1e-01
+    atol = 1e-01
 
-    # res = np.allclose(logits_output, trt_outputs[0], rtol, atol)
-    # print ("Are the start outputs are equal within the tolerance:\t", res)
+    res = np.allclose(logits_output, trt_outputs[0], rtol, atol)
+    print ("Are the start outputs are equal within the tolerance:\t", res)
     print(logits_output.sum())
-    print(logits_output)
     print(trt_outputs[0].sum())
-    print(trt_outputs[0])
+    # print(logits_output)
+    # print(trt_outputs[0])
 
 def main():
     parser = argparse.ArgumentParser(description="TensorRT BERT Sample", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -430,7 +462,7 @@ def main():
     parser.add_argument("-f", "--fp16", action="store_true", help="Indicates that inference should be run in FP16 precision", required=False)
     parser.add_argument("-i", "--int8", action="store_true", help="Indicates that inference should be run in INT8 precision", required=False)
     parser.add_argument("-t", "--strict", action="store_true", help="Indicates that inference should be run in strict precision mode", required=False)
-    parser.add_argument("-w", "--workspace-size", default=1000, help="Workspace size in MiB for building the BERT engine", type=int)
+    parser.add_argument("-w", "--workspace-size", default=20000, help="Workspace size in MiB for building the BERT engine", type=int)
     parser.add_argument("-v", "--vocab-file", default="./pre-trained_model/uncased_L-24_H-1024_A-16/vocab.txt", help="Path to file containing entire understandable vocab", required=False)
     parser.add_argument("-n", "--calib-num", default=100, help="calibration batch numbers", type=int)
     parser.add_argument("-p", "--calib-path", help="calibration cache path", required=False)
@@ -460,6 +492,8 @@ def main():
         weights_dict = load_onnx_weights_and_quant(args.onnx, config)
     else:
         raise RuntimeError("You need either specify ONNX using option --onnx to build TRT BERT model.")
+    # print("===> ", args.onnx)
+    # exit(0)
 
     with build_engine(args.workspace_size, config, weights_dict, args.vocab_file, calib_cache, args.calib_num) as engine:
         TRT_LOGGER.log(TRT_LOGGER.VERBOSE, "Serializing Engine...")

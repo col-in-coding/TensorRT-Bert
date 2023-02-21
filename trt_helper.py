@@ -45,10 +45,10 @@ class TrtNetworkHelper():
 
         for i in range(0, trt_layer.num_outputs):
             shape = trt_layer.get_output(i).shape
-            # print(trt.volume(shape))
-
-            # if len(shape) is 1:
-                # raise RuntimeError("add " + layer.name + " failed!")
+            # print("===> layer: ", trt_layer.name, trt.volume(shape))
+            # 如果没有自动推导出shape，则插入算子失败
+            if len(shape) is 1:
+                raise RuntimeError("add " + trt_layer.name + " failed!")
 
     def layer_post_process(self, trt_layer, layer_name, precision):
         """
@@ -79,17 +79,18 @@ class TrtNetworkHelper():
         self.logger.log(trt.Logger.INFO, "[Network] mark output:" + x.name + ", shape=" + str(x.shape))
 
     def addEmbedding(self, indices, weight, layer_name=None, precision=None):
+        # 自动命名为 (Unnamed Layer* 0)[Constant]，名字中带序号和类型
         constant_layer = self.network.add_constant(weight.shape, trt.Weights(weight))
         gather_layer = self.network.add_gather(constant_layer.get_output(0),
                                                indices, axis=0)
 
         if layer_name is None:
+            # 对于重复的名字，TRT会自动添加数字前标
             layer_name = "nn.Embedding"
         else:
             layer_name = "nn.Embedding." + layer_name
 
         self.layer_post_process(gather_layer, layer_name, precision)
-
         return gather_layer.get_output(0)
 
     def addGELU(self, x, layer_name=None, precision=None):
@@ -120,14 +121,70 @@ class TrtNetworkHelper():
         return gelu_layer.get_output(0)
 
     def addLayerNorm(self, x, gamma, beta, layer_name=None, precision=None):
-        # TODO: create your layer norm plugin
+        inputTensorList = []
+        inputTensorList.append(x)
 
-        return trt_layer.get_output(0)
+        layernorm_plugin = None
+        for c in self.plugin_registry.plugin_creator_list:
+            if c.name == 'MyLayerNorm':
+                layernorm_plugin = c.create_plugin(c.name, trt.PluginFieldCollection([]))
+            # if c.name == 'LayerNorm':
+                gamma_const = self.addConstant(np.ascontiguousarray([[gamma]]), "LayerNorm.Gamma")
+                beta_const = self.addConstant(np.ascontiguousarray([[beta]]), "LayerNorm.Beta")
+            #     inputTensorList.append(gamma_const)
+            #     inputTensorList.append(beta_const)
+            #     layernorm_plugin = c.create_plugin(c.name, trt.PluginFieldCollection([
+            #         trt.PluginField("epsilon", np.array([1.e-5], np.float32), trt.PluginFieldType.FLOAT32)
+            #     ]))
+        
+        assert(layernorm_plugin)
+        
+        trt_layer = self.network.add_plugin_v2(inputTensorList, layernorm_plugin)
 
-    def addLinear(self, x, weight, bias, layer_name=None, precision=None):
-        # TODO: add Linear
+        if layer_name is None:
+            layer_name = "LayerNorm"
+        else:
+            layer_name = "LayerNorm." + layer_name
+        self.layer_post_process(trt_layer, layer_name, precision)
 
-        return x
+        out = trt_layer.get_output(0)
+        # return out
+
+        X_mul = self.network.add_elementwise(out, gamma_const, trt.ElementWiseOperation.PROD)
+        X_add = self.network.add_elementwise(X_mul.get_output(0), beta_const, trt.ElementWiseOperation.SUM)
+        return X_add.get_output(0)
+
+    def addLinear(self, x, weight, bias, layer_name=None, precision=None, flag=False):
+        if layer_name:
+            layer_name = "(Linear)." + layer_name
+        else:
+            layer_name = "(Linear)."
+
+        # if flag:
+        #     self.markOutput(x)
+
+        weight_const = self.addConstant(weight, 'weight.' + layer_name)
+        weight_const = self.addShuffle(weight_const, None, (1, *weight_const.shape), None, "Custom.Linear.Weight_")
+        matmul_out = self.addMatMul(x, weight_const, layer_name)
+
+        # if flag:
+        #     self.markOutput(matmul_out)
+        #     print(f"===> bias: ", bias.shape)
+        #     print(f"===> matmul_out: ", matmul_out.shape)
+        #     exit(0)
+
+        # bias_const = self.addConstant(bias, 'bias.' + layer_name)
+        # bias_const = self.addShuffle(bias_const, None, matmul_out.shape, None, "Custom.Linear.Bias_")
+        bias_const = self.addConstant(np.ascontiguousarray([[bias]]), 'bias.' + layer_name)
+        # if flag:
+        #     print("===> ", bias_const.shape)
+        #     exit(0)
+        out = self.addAdd(matmul_out, bias_const, layer_name, precision)
+        
+        # if flag:
+        #     self.markOutput(out)
+        
+        return out
 
     def addReLU(self, layer, x, layer_name=None, precision=None):
         trt_layer = self.network.add_activation(x, type=trt.ActivationType.RELU)
@@ -141,8 +198,21 @@ class TrtNetworkHelper():
         return x
 
     def addSoftmax(self, x: trt.ITensor, dim: int = -1, layer_name=None, precision=None) -> trt.ITensor:
-        # TODO: add softmax
-        return x
+        
+        softmax_layer = self.network.add_softmax(x)
+        shape_len = len(x.shape)
+        if dim < 0:
+            dim = shape_len + dim
+
+        # axes 以 bit mask 的方式表示，这里是（N, S, H, D）, dim=-1，则应该表示（0，0，0，1）
+        softmax_layer.axes = 1 << 3
+        
+        if layer_name is None:
+            layer_name = f"Softmax[dim={dim}]"
+        else:
+            layer_name = f"Softmax[dim={dim}]." + layer_name
+        self.layer_post_process(softmax_layer, layer_name, precision)
+        return softmax_layer.get_output(0)
 
     ################## unary op ###################
     def addLog(self, x: trt.ITensor, layer_name=None, precision=None):
@@ -159,8 +229,14 @@ class TrtNetworkHelper():
 
     ################## elementwise op ###################
     def addAdd(self, a, b, layer_name=None, precision=None):
-        # add Add
-        return x
+        add_layer = self.network.add_elementwise(a, b, trt.ElementWiseOperation.SUM)
+        
+        if layer_name is None:
+            layer_name = "Add"
+        else:
+            layer_name = "Add." + layer_name
+        self.layer_post_process(add_layer, layer_name, precision)
+        return add_layer.get_output(0)
 
     # tensor and scalar op
     def addScale(
@@ -171,17 +247,32 @@ class TrtNetworkHelper():
             precision: trt.DataType = None
     ) -> trt.ITensor:
         """scale"""
-        # TODOL add scale
-
-        return x
+        scale_layer = self.network.add_scale(
+            x,
+            trt.ScaleMode.UNIFORM,
+            None,
+            trt.Weights(np.ascontiguousarray([scale], dtype=np.float32)
+        ), None)
+        if layer_name is None:
+            layer_name = "Scale"
+        else:
+            layer_name = "Scale." + layer_name
+        self.layer_post_process(scale_layer, layer_name, precision)
+        return scale_layer.get_output(0)
 
     def addMatMul(self, a: trt.ITensor, b: trt.ITensor, layer_name: Optional[str] = None) -> trt.ITensor:
         # add MatMul
-        return x
-
+        matmul_layer = self.network.add_matrix_multiply(
+            a, trt.MatrixOperation.NONE, b, trt.MatrixOperation.NONE)
+        if layer_name is None:
+            layer_name = "MatMul"
+        else:
+            layer_name = "MatMul." + layer_name
+        self.layer_post_process(matmul_layer, layer_name, None)
+        return matmul_layer.get_output(0)
 
     def addConstant(self, w, layer_name: Optional[str] = None) -> trt.ITensor:
-        trt_layer = self.network.add_constant(w.shape, w)
+        trt_layer = self.network.add_constant(w.shape, trt.Weights(np.ascontiguousarray(w)))
 
         if layer_name is None:
             layer_name = "trt.Constant"
@@ -245,7 +336,7 @@ class InferHelper():
             # print(inputs[i].nbytes)
 
         # for i in range(0, self.engine.num_bindings):
-            # print("get_binding_shape:" + str(self.context.get_binding_shape(i)))
+        #     print("get_binding_shape:" + str(self.context.get_binding_shape(i)))
 
         outputs = []
         for i in range(len(inputs), self.engine.num_bindings):

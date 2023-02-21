@@ -70,7 +70,7 @@ def trt_infer(plan_name):
     text = "The capital of France, " + tokenizer.mask_token + ", contains the Eiffel Tower."
     encoded_input = tokenizer.encode_plus(text, return_tensors = "pt")
     mask_index = torch.where(encoded_input["input_ids"][0] == tokenizer.mask_token_id)
-    print(encoded_input)
+    print("===> encoded_input: ", encoded_input)
 
     """
     TensorRT Initialization
@@ -85,12 +85,21 @@ def trt_infer(plan_name):
 
     infer_helper = InferHelper(plan_name, TRT_LOGGER)
     # input_list = [encoded_input['input_ids'].detach().numpy(), encoded_input['attention_mask'].detach().numpy(), encoded_input['token_type_ids'].detach().numpy()]
-    input_list = [encoded_input['input_ids'].detach().numpy(), encoded_input['token_type_ids'].detach().numpy(), encoded_input['attention_mask'].detach().numpy()]
+    input_list = [
+        encoded_input['input_ids'].detach().numpy().astype(np.int32),
+        encoded_input['attention_mask'].detach().numpy().astype(np.int32),
+        encoded_input['token_type_ids'].detach().numpy().astype(np.int32),
+    ]
+
+    print("===> plan name: ", plan_name)
+    print("===> input_ids: ", input_list[0])
+    print("===> attention_mask: ", input_list[1])
+    print("===> token_type_ids: ", input_list[2])
 
     output = infer_helper.infer(input_list)
-    print(output)
 
     logits = torch.from_numpy(output[0])
+    print("===> logits: ", logits.shape)
     softmax = F.softmax(logits, dim = -1)
     mask_word = softmax[0, mask_index, :]
     top_10 = torch.topk(mask_word, 10, dim = 1)[1][0]
@@ -101,10 +110,11 @@ def trt_infer(plan_name):
         new_sentence = text.replace(tokenizer.mask_token, word)
         print(new_sentence)
 
-    print("hhhh, the result is wrong, debug yourself")
+    # print("hhhh, the result is wrong, debug yourself")
 
 if __name__ == '__main__':
-    src_onnx = 'bert-base-uncased/model-sim.onnx'
-    plan_name = 'bert-base-uncased/bert.plan'
+    src_onnx = 'onnx/model-sim.onnx'
+    plan_name = 'engine/bert_o.plan'
+
     onnx2trt(src_onnx, plan_name)
     trt_infer(plan_name)
