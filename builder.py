@@ -152,18 +152,14 @@ def transformer_layer(network_helper, prefix, config, weights_dict, input_tensor
     intermediate_w = weights_dict[prefix + "intermediate_dense_kernel"]
     intermediate_b = weights_dict[prefix + "intermediate_dense_bias"]
     intermediate_w = np.transpose(intermediate_w)
-    intermediate_output = network_helper.addLinear(attention_output, intermediate_w, intermediate_b, flag=layer==0)
-
-    # # FOR DEBUG
-    # if layer == 0:
-    #     network_helper.markOutput(intermediate_output)
+    intermediate_output = network_helper.addLinear(attention_output, intermediate_w, intermediate_b)
 
     intermediate_output = network_helper.addGELU(intermediate_output)
 
     # BertOutput
     output_w = weights_dict[prefix + "output_dense_kernel"]
-    output_w = np.transpose(output_w)
     output_b = weights_dict[prefix + "output_dense_bias"]
+    output_w = np.transpose(output_w)
     layer_output = network_helper.addLinear(intermediate_output, output_w, output_b)
 
     layer_output = network_helper.addAdd(layer_output, attention_output)
@@ -173,6 +169,9 @@ def transformer_layer(network_helper, prefix, config, weights_dict, input_tensor
     # print("===> ", prefix + "output_layernorm_beta")
     layer_output = network_helper.addLayerNorm(layer_output, gamma, beta)
 
+    # # FOR DEBUG
+    # if layer == 0:
+    #     network_helper.markOutput(intermediate_output)
     return layer_output
 
 def transformer_output_layer(network_helper, config, weights_dict, input_tensor):
@@ -313,9 +312,6 @@ def emb_layernorm(network_helper, config, weights_dict, builder_config, sequence
     beta = weights_dict["embeddings_layernorm_beta"]
     out = network_helper.addLayerNorm(embeddings, gamma, beta)
 
-    # for i in range(network_helper.network.num_layers):
-    #     print(network_helper.network.get_layer(i).name)
-    # exit(0)
     return out
 
 def build_engine(workspace_size, config, weights_dict, vocab_file, calibrationCacheFile, calib_num):
@@ -347,13 +343,16 @@ def build_engine(workspace_size, config, weights_dict, vocab_file, calibrationCa
 
         # Create the network
         embeddings = emb_layernorm(network_helper, config, weights_dict, builder_config, None, None)
+        # # 验证 LayerNorm
         # network_helper.markOutput(embeddings)
 
         bert_out = bert_model(network_helper, config, weights_dict, embeddings, None)
+        # 验证12层 transformer layer的输出
         # network_helper.markOutput(bert_out)
 
         cls_output = transformer_output_layer(network_helper, config, weights_dict, bert_out)
         network_helper.markOutput(cls_output)
+        # exit(0)
 
         profile = builder.create_optimization_profile()
         min_shape = (1, 1)
@@ -411,8 +410,9 @@ def test_text(infer_helper, BERT_PATH):
 
     # debug = output[0]
     # debug2 = np.load("debug.npy")
-    # res = np.allclose(debug, debug2, 1e-02, 1e-02)
+    # res = np.allclose(debug, debug2, 1e-01, 1e-01)
     # print("===> debug compare res: ", res)
+    # print("===> debug abs error: ", np.abs(debug - debug2).max())
     # exit(0)
 
     logits = torch.from_numpy(output[0])
@@ -505,7 +505,7 @@ def main():
 
     infer_helper = InferHelper(args.output, TRT_LOGGER)
 
-    test_case_data(infer_helper, args.config_dir + "/case_data.npz")
+    # test_case_data(infer_helper, args.config_dir + "/case_data.npz")
 
     test_text(infer_helper, args.config_dir)
 

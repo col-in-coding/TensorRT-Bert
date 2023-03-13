@@ -123,19 +123,16 @@ class TrtNetworkHelper():
     def addLayerNorm(self, x, gamma, beta, layer_name=None, precision=None):
         inputTensorList = []
         inputTensorList.append(x)
+        # print("===> x: ", x.shape)
 
         layernorm_plugin = None
         for c in self.plugin_registry.plugin_creator_list:
             if c.name == 'MyLayerNorm':
                 layernorm_plugin = c.create_plugin(c.name, trt.PluginFieldCollection([]))
-            # if c.name == 'LayerNorm':
                 gamma_const = self.addConstant(np.ascontiguousarray([[gamma]]), "LayerNorm.Gamma")
                 beta_const = self.addConstant(np.ascontiguousarray([[beta]]), "LayerNorm.Beta")
-            #     inputTensorList.append(gamma_const)
-            #     inputTensorList.append(beta_const)
-            #     layernorm_plugin = c.create_plugin(c.name, trt.PluginFieldCollection([
-            #         trt.PluginField("epsilon", np.array([1.e-5], np.float32), trt.PluginFieldType.FLOAT32)
-            #     ]))
+                inputTensorList.append(gamma_const)
+                inputTensorList.append(beta_const)
         
         assert(layernorm_plugin)
         
@@ -148,11 +145,7 @@ class TrtNetworkHelper():
         self.layer_post_process(trt_layer, layer_name, precision)
 
         out = trt_layer.get_output(0)
-        # return out
-
-        X_mul = self.network.add_elementwise(out, gamma_const, trt.ElementWiseOperation.PROD)
-        X_add = self.network.add_elementwise(X_mul.get_output(0), beta_const, trt.ElementWiseOperation.SUM)
-        return X_add.get_output(0)
+        return out
 
     def addLinear(self, x, weight, bias, layer_name=None, precision=None, flag=False):
         if layer_name:
@@ -169,6 +162,7 @@ class TrtNetworkHelper():
 
         # if flag:
         #     self.markOutput(matmul_out)
+        #     print(f"===> weight_const: ", weight_const.shape)
         #     print(f"===> bias: ", bias.shape)
         #     print(f"===> matmul_out: ", matmul_out.shape)
         #     exit(0)

@@ -58,9 +58,11 @@ if __name__ == "__main__":
     # print(graph.__dir__())
     # exit(0)
     for node in graph.nodes:
-        # if node.name == "/bert/encoder/layer.0/attention/output/LayerNorm/Add_1":
-        # if node.name == "/bert/encoder/layer.0/intermediate/dense/MatMul":
-        if node.name == "/bert/encoder/layer.0/intermediate/dense/Add":
+        # if node.name == "/bert/embeddings/LayerNorm/Add_1": # 验证Layernorm
+        # if node.name == "/bert/encoder/layer.0/intermediate/dense/Add": # 验证AddLinear
+        # if node.name == "/bert/encoder/layer.0/intermediate/intermediate_act_fn/Mul_1":  # 验证GELU
+        # if node.name == "/bert/encoder/layer.0/output/LayerNorm/Add_1":  # 验证一层Transformer Layer
+        if node.name == "/bert/encoder/layer.11/output/LayerNorm/Add_1":  # 最后一层Transformer Layer
             debug_tensor = node.outputs[0]
             # print(debug_tensor)
             # print(type(graph.outputs[0]))
