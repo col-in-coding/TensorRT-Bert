@@ -23,7 +23,7 @@ import tensorrt as trt
 soFilePath      = './LayerNorm.so'
 nBS             = 4
 nSL             = 64
-nEmbedding      = 256
+nEmbedding      = 768
 epsilon         = 6e-6
 
 np.random.seed(97)
@@ -36,7 +36,8 @@ def check(a, b, weak = False):
 
 def layerNormCPU(bufferH):
     _x = bufferH[0]
-    nEmbed = bufferH[0].shape[2]
+    gamma = bufferH[1]
+    beta = bufferH[2]
     _0  = np.mean(_x,2)[:,:,np.newaxis]
     _1  = _x - _0
     _2  = _1 * _1
@@ -47,12 +48,15 @@ def layerNormCPU(bufferH):
     _7  = np.sqrt(_6)
     _8  = 1 / _7                # 1/sqrt(...)
     _9  = _1 * _8
-    return _9
+    _10 = _9 * gamma
+    _11 = _10 + beta
+    return _11
 
 def getLayerNormPlugin():
     for c in trt.get_plugin_registry().plugin_creator_list:
         #print(c.name)
-        if c.name == 'LayerNorm':
+        if c.name == 'MyLayerNorm':
+        # if c.name == 'LayerNorm':
             return c.create_plugin(c.name, trt.PluginFieldCollection([]))
     return None
 
@@ -68,10 +72,12 @@ def run():
     config.flags    = 0
 
     inputTensorList = []
-    inputTensorList.append( network.add_input('inputT', trt.float32, [-1,-1,256]) )
+    inputTensorList.append( network.add_input('inputT', trt.float32, [-1, -1, 768]) )
+    inputTensorList.append( network.add_input('gemmaT', trt.float32, [1, 1, 768]) )
+    inputTensorList.append( network.add_input('betaT', trt.float32, [1, 1, 768]) )
 
     profile = builder.create_optimization_profile()
-    profile.set_shape('inputT',[1,4,256],[4,64,256],[16,256,256])
+    profile.set_shape('inputT', [1,4,768], [4,64,768], [16,256,768])
     config.add_optimization_profile(profile)
 
     pluginLayer = network.add_plugin_v2(inputTensorList, getLayerNormPlugin())
@@ -91,8 +97,12 @@ def run():
         print(engine.get_tensor_mode(engine.get_tensor_name(i)).name, engine.get_binding_dtype(i),engine.get_binding_shape(i),context.get_binding_shape(i))
 
     bufferH = []
-    bufferH.append( np.random.rand(nBS,nSL,nEmbedding).astype(np.float32).reshape(nBS,nSL,nEmbedding) * 2 - 1)
-    bufferH.append(np.empty(context.get_binding_shape(1),dtype=trt.nptype(engine.get_binding_dtype(1))))
+    bufferH.append(np.random.rand(nBS,nSL,nEmbedding).astype(np.float32) * 2 - 1)
+    # gamma
+    bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
+    # beta
+    bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
+    bufferH.append(np.empty(context.get_binding_shape(3),dtype=trt.nptype(engine.get_binding_dtype(1))))
 
     bufferD = []
     for i in range(engine.num_bindings):
@@ -108,8 +118,9 @@ def run():
 
     print("check result:")
     temp1 = bufferH[-1]
-    temp2 = layerNormCPU(bufferH[:1])
-    print(check(temp1,temp2,True), "max diff=%f"%(np.max(np.abs(temp1 - temp2))) )
+    print(temp1.shape)
+    temp2 = layerNormCPU(bufferH[:3])
+    print(check(temp1, temp2, True), f"max diff={np.abs(temp1 - temp2).max()}")
     
     for b in bufferD:
         cudart.cudaFree(b)

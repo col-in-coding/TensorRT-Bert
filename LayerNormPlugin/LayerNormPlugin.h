@@ -28,7 +28,7 @@
 // +------- Plguin ---------------------------------------------------------------------------------
 namespace
 {
-static const char* PLUGIN_NAME{"LayerNorm"};
+static const char* PLUGIN_NAME{"MyLayerNorm"};
 static const char* PLUGIN_VERSION{"1"};
 } // namespace
 
@@ -101,12 +101,18 @@ public:
         switch(pos)
         {
         case 0:
+            // Input
             res = (inOut[pos].type == DataType::kFLOAT); break;
         case 1:
+        case 2:
+            // Gamma, Beta
+            res = inOut[pos].type == DataType::kFLOAT; break;
+        case 3:
             res = inOut[pos].type == inOut[0].type; break;
         default:// should NOT be here
             res = false;
         }
+        // std::cout << "res: " << res << std::endl;
         return res;
     }
     
