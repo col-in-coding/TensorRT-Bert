@@ -25,6 +25,7 @@ nBS             = 4
 nSL             = 64
 nEmbedding      = 768
 epsilon         = 6e-6
+FP16            = True
 
 np.random.seed(97)
 
@@ -42,7 +43,7 @@ def layerNormCPU(bufferH):
     _1  = _x - _0
     _2  = _1 * _1
     _3  = np.mean(_2,2)[:,:,np.newaxis]
-    _4  = np.array(epsilon,dtype=np.float32)
+    _4  = np.array(epsilon,dtype=np.float16)
     _5  = _4.reshape(1,1,1)
     _6  = _3 + _5
     _7  = np.sqrt(_6)
@@ -61,26 +62,40 @@ def getLayerNormPlugin():
     return None
 
 def run():
-    logger = trt.Logger(trt.Logger.ERROR)
+    logger = trt.Logger(trt.Logger.VERBOSE)
+    # logger = trt.Logger(trt.Logger.ERROR)
     trt.init_libnvinfer_plugins(logger, '')
     ctypes.cdll.LoadLibrary(soFilePath)
 
     builder         = trt.Builder(logger)
     network         = builder.create_network(1<<0)
     config          = builder.create_builder_config()
-    config.max_workspace_size = 6 << 30
-    config.flags    = 0
+    config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 6 << 30)
 
     inputTensorList = []
-    inputTensorList.append( network.add_input('inputT', trt.float32, [-1, -1, 768]) )
-    inputTensorList.append( network.add_input('gemmaT', trt.float32, [1, 1, 768]) )
-    inputTensorList.append( network.add_input('betaT', trt.float32, [1, 1, 768]) )
+    if FP16:
+        config.set_flag(trt.BuilderFlag.FP16)
+        # config.set_flag(trt.BuilderFlag.STRICT_TYPES)
+        inputTensorList.append( network.add_input('inputT', trt.float16, [-1, -1, 768]) )
+        inputTensorList.append( network.add_input('gemmaT', trt.float16, [1, 1, 768]) )
+        inputTensorList.append( network.add_input('betaT', trt.float16, [1, 1, 768]) )
+    else:
+        inputTensorList.append( network.add_input('inputT', trt.float32, [-1, -1, 768]) )
+        inputTensorList.append( network.add_input('gemmaT', trt.float32, [1, 1, 768]) )
+        inputTensorList.append( network.add_input('betaT', trt.float32, [1, 1, 768]) )
 
     profile = builder.create_optimization_profile()
-    profile.set_shape('inputT', [1,4,768], [4,64,768], [16,256,768])
+    profile.set_shape('inputT', [1, 1, 768], [nBS, nSL, 768], [nBS, nSL, 768])
     config.add_optimization_profile(profile)
 
     pluginLayer = network.add_plugin_v2(inputTensorList, getLayerNormPlugin())
+    # force trt to use fp16 mode
+    pluginLayer.precision = trt.DataType.HALF
+    
+    output_layer = pluginLayer.get_output(0)
+    # print("input type: ", pluginLayer.get_input(0).dtype)
+    # print("output type: ", output_layer.dtype)
+    # exit()
 
     network.mark_output(pluginLayer.get_output(0))
 
@@ -97,12 +112,22 @@ def run():
         print(engine.get_tensor_mode(engine.get_tensor_name(i)).name, engine.get_binding_dtype(i),engine.get_binding_shape(i),context.get_binding_shape(i))
 
     bufferH = []
-    bufferH.append(np.random.rand(nBS,nSL,nEmbedding).astype(np.float32) * 2 - 1)
-    # gamma
-    bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
-    # beta
-    bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
-    bufferH.append(np.empty(context.get_binding_shape(3),dtype=trt.nptype(engine.get_binding_dtype(1))))
+    if FP16:
+        bufferH.append(np.random.rand(nBS,nSL,nEmbedding).astype(np.float16) * 2 - 1)
+        # gamma
+        bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float16))
+        # beta
+        bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float16))
+    else:
+        bufferH.append(np.random.rand(nBS,nSL,nEmbedding).astype(np.float32) * 2 - 1)
+        # gamma
+        bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
+        # beta
+        bufferH.append(np.random.rand(1, 1, nEmbedding).astype(np.float32))
+    
+    bufferH.append(np.empty(context.get_binding_shape(3), dtype=trt.nptype(engine.get_binding_dtype(3))))
+    # print("===> output type :", engine.get_binding_dtype(3))
+    # exit(0)
 
     bufferD = []
     for i in range(engine.num_bindings):
@@ -117,9 +142,14 @@ def run():
         cudart.cudaMemcpy(bufferH[i].ctypes.data, bufferD[i], bufferH[i].nbytes, cudart.cudaMemcpyKind.cudaMemcpyDeviceToHost)
 
     print("check result:")
+    # 99031.695
     temp1 = bufferH[-1]
-    print(temp1.shape)
+    print("===> gpu sum: ", temp1.sum())
+    # print(temp1)
     temp2 = layerNormCPU(bufferH[:3])
+    print("===> cpu sum:", temp2.astype(np.float32).sum())
+    # print(temp2)
+
     print(check(temp1, temp2, True), f"max diff={np.abs(temp1 - temp2).max()}")
     
     for b in bufferD:

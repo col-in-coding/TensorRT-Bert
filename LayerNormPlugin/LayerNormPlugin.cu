@@ -14,63 +14,57 @@
  * limitations under the License.
  */
  
- #include "LayerNormPlugin.h"
+#include "LayerNormPlugin.h"
+#include "LayerNormKernel.h"
+
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 using namespace nvinfer1;
 
 PluginFieldCollection LayerNormPluginCreator::fc_{};
 std::vector<PluginField> LayerNormPluginCreator::attr_;
 
-__global__ void layerNormKernel(float *pInput, float *gamma, float *beta, float *pOutput)
-{
-    // nDim=768
-    const int tx = threadIdx.x, index = blockIdx.x * 768 + threadIdx.x;
-
-    __shared__ float temp[256];
-
-    float value0 = pInput[index];
-    float value1 = pInput[index + 256];
-    float value2 = pInput[index + 512];
-
-    temp[tx] = value0 + value1 + value2;
-    __syncthreads();
-
-    for (int stride = 128; stride >= 1; stride /= 2)
-    {
-        if (tx < stride)
-        {
-            temp[tx] += temp[tx + stride];
-        }
-        __syncthreads();
-    }
-    float mean = temp[0] / 768;
-    __syncthreads();
-
-    temp[tx] = (value0 - mean) * (value0 - mean) + (value1 - mean) * (value1 - mean) + (value2 - mean) * (value2 - mean);
-    __syncthreads();
-
-    for (int stride = 128; stride >= 1; stride /= 2)
-    {
-        if (tx < stride)
-        {
-            temp[tx] += temp[tx + stride];
-        }
-        __syncthreads();
-    }
-    float var = temp[0] / 768;
-
-    pOutput[index]       = (value0 - mean) * rsqrtf(var + 6e-6) * gamma[tx] + beta[tx];
-    pOutput[index + 256] = (value1 - mean) * rsqrtf(var + 6e-6) * gamma[tx + 256] + beta[tx + 256];
-    pOutput[index + 512] = (value2 - mean) * rsqrtf(var + 6e-6) * gamma[tx + 512] + beta[tx + 512];
-}
-
-int32_t LayerNormPlugin::enqueue(const PluginTensorDesc* inputDesc, const PluginTensorDesc* outputDesc, const void* const* inputs, void* const* outputs, void* workspace, cudaStream_t stream) noexcept
+int32_t LayerNormPlugin::enqueue(const PluginTensorDesc* inputDesc, const PluginTensorDesc* outputDesc,
+    void const* const* inputs, void* const* outputs, void* workspace, cudaStream_t stream) noexcept
 {
     WHERE_AM_I();
     const int nBlock = inputDesc[0].dims.d[0] * inputDesc[0].dims.d[1];
 
-    layerNormKernel <<<nBlock, 256, 0, stream>>>(
-        (float *)inputs[0], (float *)inputs[1], (float *)inputs[2], (float *)outputs[0]);
+    switch (inputDesc[0].type)
+    {
+    case DataType::kFLOAT:
+    {
+        // 当 trt config设置为FP16的时候，即使输入是FP32，内部会尝试转换成FP16推理，如果确定速度更快就使用FP16
+        // std::this_thread::sleep_for(std::chrono::milliseconds(40));
+        printf("===> using FP32 kernel\n");
+        auto const input = static_cast<float const*>(inputs[0]);
+        auto const gamma = static_cast<float const*>(inputs[1]);
+        auto const beta = static_cast<float const*>(inputs[2]);
+        auto output = static_cast<float *>(outputs[0]);
+        computeLayerNorm<float>(input, gamma, beta, output, stream, nBlock);
+        break;
+    }
+    case DataType::kHALF:
+    {
+        printf("===> using FP16 kernel\n");
+        auto const input = static_cast<half const*>(inputs[0]);
+        // for 
+        // float tmp = temp[tx];
+        // printf(" %f ", tmp);
+        auto const gamma = static_cast<half const*>(inputs[1]);
+        auto const beta = static_cast<half const*>(inputs[2]);
+        auto output = static_cast<half *>(outputs[0]);
+        computeLayerNorm<half>(input, gamma, beta, output, stream, nBlock);
+        break;
+    }
+    default:
+    {
+        printf("===> Datatype not implemented yet. %s, %s", __FILE__, __LINE__);
+        break;
+    }
+    }
     return 0;
 }
 

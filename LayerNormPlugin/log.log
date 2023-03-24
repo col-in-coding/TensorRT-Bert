@@ -1,0 +1,745 @@
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::BatchTilePlugin_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::BatchedNMS_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::BatchedNMSDynamic_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Clip_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::BatchedNMSV2_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::BatchedNMSDynamicV2_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::CoordConvAC version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::CropAndResize version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::CropAndResizeDynamic version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::DecodeBbox3DPlugin version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::DetectionLayer_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::EfficientNMS_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::EfficientNMS_ONNX_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::EfficientNMS_Explicit_TF_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::EfficientNMS_Implicit_TF_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::FlattenConcat_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::GenerateDetection_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::GridAnchor_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::GridAnchorRect_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::InstanceNormalization_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::LReLU_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::MultilevelCropAndResize_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::MultilevelProposeROI_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::MultiscaleDeformableAttnPlugin_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::NMS_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::NMSDynamic_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Normalize_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::PillarScatterPlugin version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::PriorBox_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::ProposalLayer_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Proposal version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::ProposalDynamic version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::PyramidROIAlign_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Region_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Reorg_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::ResizeNearest_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::RPROI_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::ROIAlign_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::ScatterND version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::SpecialSlice_TRT version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::Split version 1
+[03/24/2023-18:14:05] [TRT] [V] Registered plugin creator - ::VoxelGeneratorPlugin version 1
+[03/24/2023-18:14:06] [TRT] [I] [MemUsageChange] Init CUDA: CPU +326, GPU +0, now: CPU 345, GPU 15216 (MiB)
+[03/24/2023-18:14:06] [TRT] [V] Trying to load shared library libnvinfer_builder_resource.so.8.5.1
+[03/24/2023-18:14:06] [TRT] [V] Loaded shared library libnvinfer_builder_resource.so.8.5.1
+[03/24/2023-18:14:10] [TRT] [I] [MemUsageChange] Init builder kernel library: CPU +441, GPU +118, now: CPU 841, GPU 15334 (MiB)
+[03/24/2023-18:14:10] [TRT] [W] CUDA lazy loading is not enabled. Enabling it can significantly reduce device memory usage. See `CUDA_MODULE_LOADING` in https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#env-vars
+[03/24/2023-18:14:10] [TRT] [V] Original: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After dead-layer removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] Applying generic optimizations to the graph for inference.
+[03/24/2023-18:14:10] [TRT] [V] After Myelin optimization: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] Applying ScaleNodes fusions.
+[03/24/2023-18:14:10] [TRT] [V] After scale fusion: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After dupe layer removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After final dead-layer removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After tensor merging: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After vertical fusions: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After dupe layer removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After final dead-layer removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After tensor merging: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After slice removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] After concat removal: 1 layers
+[03/24/2023-18:14:10] [TRT] [V] Trying to split Reshape and strided tensor
+[03/24/2023-18:14:10] [TRT] [V] Graph construction and optimization completed in 0.0869274 seconds.
+[03/24/2023-18:14:10] [TRT] [V] Trying to load shared library libcublas.so.11
+[03/24/2023-18:14:10] [TRT] [V] Loaded shared library libcublas.so.11
+[03/24/2023-18:14:11] [TRT] [V] Using cublas as plugin tactic source
+[03/24/2023-18:14:11] [TRT] [V] Trying to load shared library libcublasLt.so.11
+[03/24/2023-18:14:11] [TRT] [V] Loaded shared library libcublasLt.so.11
+[03/24/2023-18:14:11] [TRT] [V] Using cublasLt as core library tactic source
+[03/24/2023-18:14:11] [TRT] [I] [MemUsageChange] Init cuBLAS/cuBLASLt: CPU +853, GPU +360, now: CPU 1694, GPU 15694 (MiB)
+[03/24/2023-18:14:11] [TRT] [V] Trying to load shared library libcudnn.so.8
+[03/24/2023-18:14:11] [TRT] [V] Loaded shared library libcudnn.so.8
+[03/24/2023-18:14:11] [TRT] [V] Using cuDNN as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuDNN: CPU +125, GPU +60, now: CPU 1819, GPU 15754 (MiB)
+[03/24/2023-18:14:12] [TRT] [I] Local timing cache in use. Profiling results in this builder pass will not be stored.
+[03/24/2023-18:14:12] [TRT] [V] Constructing optimization profile number 0 [1/1].
+[03/24/2023-18:14:12] [TRT] [V] Reserving memory for host IO tensors. Host: 0 bytes
+[03/24/2023-18:14:12] [TRT] [V] =============== Computing reformatting costs: 
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half((* 768 (# 1 (SHAPE inputT))),768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(inputT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.00734585
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0174592
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00774206
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x00000000000003e8 Time: 0.00734585
+[03/24/2023-18:14:12] [TRT] [V] =============== Computing reformatting costs: 
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Float(768,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.00822582
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0305502
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.0116642
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x00000000000003e8 Time: 0.00822582
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Float(768:32,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.0119223
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0152413
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00863863
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00863863
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(768:2,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.0110545
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0283031
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00959634
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00959634
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:4,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.0119702
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.024576
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00843973
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00843973
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:8,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.00861183
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0233017
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00803733
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00803733
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:16,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(gemmaT -> <out>) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.0100693
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0122754
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00984847
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00984847
+[03/24/2023-18:14:12] [TRT] [V] =============== Computing reformatting costs: 
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Float(768,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Float(768:32,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(768:2,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:4,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:8,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half(768,768,1) -> Half(1:16,768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] =============== Computing reformatting costs: 
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning Reformat: Half((* 768 (# 1 (SHAPE inputT))),768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: Optimizer Reformat(<in> -> (Unnamed Layer* 0) [PluginV2DynamicExt]_output_0) (Reformat)
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003e8 Time: 0.00766424
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x00000000000003ea Time: 0.0212907
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.00730899
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.00730899
+[03/24/2023-18:14:12] [TRT] [V] =============== Computing costs for 
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Float((* 768 (# 1 (SHAPE inputT))),768,1), Float(768,768,1), Float(768,768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.0325508
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.0325508
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Float((* 768 (# 1 (SHAPE inputT))),768,1), Float(768,768,1), Float(768:32,768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.0324267
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.0324267
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Float((* 768 (# 1 (SHAPE inputT))),768,1), Float(768:32,768,1), Float(768,768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.0372433
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.0372433
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Float((* 768 (# 1 (SHAPE inputT))),768,1), Float(768:32,768,1), Float(768:32,768,1) -> Float((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+===> using FP32 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.0323956
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.0323956
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768,768,1), Half(768,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.170496
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.170496
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768,768,1), Half(768:2,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768,768,1), Half(1:4,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169301
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169301
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768,768,1), Half(1:8,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.170155
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.170155
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768,768,1), Half(1:16,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.168789
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.168789
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768:2,768,1), Half(768,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169643
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169643
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768:2,768,1), Half(768:2,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169648
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169648
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768:2,768,1), Half(1:4,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768:2,768,1), Half(1:8,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(768:2,768,1), Half(1:16,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169643
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169643
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:4,768,1), Half(768,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169131
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169131
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:4,768,1), Half(768:2,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:4,768,1), Half(1:4,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:4,768,1), Half(1:8,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169301
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169301
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:4,768,1), Half(1:16,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:8,768,1), Half(768,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169984
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:8,768,1), Half(768:2,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169813
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169813
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:8,768,1), Half(1:4,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169472
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169472
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:8,768,1), Half(1:8,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.171349
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.171349
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:8,768,1), Half(1:16,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169131
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169131
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:16,768,1), Half(768,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169813
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169813
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:16,768,1), Half(768:2,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.170837
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.170837
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:16,768,1), Half(1:4,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.16896
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:16,768,1), Half(1:8,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.169472
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.169472
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] *************** Autotuning format combination: Half((* 768 (# 1 (SHAPE inputT))),768,1), Half(1:16,768,1), Half(1:16,768,1) -> Half((* 768 (# 1 (SHAPE inputT))),768,1) where E0=(* 768 (# 1 (SHAPE inputT))) ***************
+[03/24/2023-18:14:12] [TRT] [V] --------------- Timing Runner: (Unnamed Layer* 0) [PluginV2DynamicExt] (PluginV2)
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+===> using FP16 kernel
+[03/24/2023-18:14:12] [TRT] [V] Tactic: 0x0000000000000000 Time: 0.170496
+[03/24/2023-18:14:12] [TRT] [V] Fastest Tactic: 0x0000000000000000 Time: 0.170496
+[03/24/2023-18:14:12] [TRT] [V] >>>>>>>>>>>>>>> Chose Runner Type: PluginV2 Tactic: 0x0000000000000000
+[03/24/2023-18:14:12] [TRT] [V] Adding reformat layer: Reformatted Input Tensor 0 to (Unnamed Layer* 0) [PluginV2DynamicExt] (inputT) from Half((* 768 (# 1 (SHAPE inputT))),768,1) to Float((* 768 (# 1 (SHAPE inputT))),768,1)
+[03/24/2023-18:14:12] [TRT] [V] Adding reformat layer: Reformatted Input Tensor 1 to (Unnamed Layer* 0) [PluginV2DynamicExt] (gemmaT) from Half(768,768,1) to Float(768,768,1)
+[03/24/2023-18:14:12] [TRT] [V] Adding reformat layer: Reformatted Input Tensor 2 to (Unnamed Layer* 0) [PluginV2DynamicExt] (betaT) from Half(768,768,1) to Float(768,768,1)
+[03/24/2023-18:14:12] [TRT] [V] For layer (Unnamed Layer* 0) [PluginV2DynamicExt] a non-conforming implementation was chosen than was requested i.e. requested layer computation precision and output precision types were ignored because it resulted in faster network performance. Set BuilderFlag::kPREFER_PRECISION_CONSTRAINTS to encourage choosing a conforming implementation, or set BuilderFlag::kOBEY_PRECISION_CONSTRAINTS to require choosing a conforming implementation.
+[03/24/2023-18:14:12] [TRT] [V] Formats and tactics selection completed in 0.192377 seconds.
+[03/24/2023-18:14:12] [TRT] [V] After reformat layers: 4 layers
+[03/24/2023-18:14:12] [TRT] [V] Total number of blocks in pre-optimized block assignment: 4
+[03/24/2023-18:14:12] [TRT] [I] Total Activation Memory: 6443243520
+[03/24/2023-18:14:12] [TRT] [I] Detected 3 inputs and 1 output network tensors.
+[03/24/2023-18:14:12] [TRT] [V] Layer: (Unnamed Layer* 0) [PluginV2DynamicExt] Host Persistent: 224 Device Persistent: 0 Scratch Memory: 0
+[03/24/2023-18:14:12] [TRT] [V] Skipped printing memory information for 3 layers with 0 memory size i.e. Host Persistent + Device Persistent + Scratch Memory == 0.
+[03/24/2023-18:14:12] [TRT] [I] Total Host Persistent Memory: 224
+[03/24/2023-18:14:12] [TRT] [I] Total Device Persistent Memory: 0
+[03/24/2023-18:14:12] [TRT] [I] Total Scratch Memory: 0
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageStats] Peak memory usage of TRT CPU/GPU memory allocators: CPU 0 MiB, GPU 4 MiB
+[03/24/2023-18:14:12] [TRT] [I] [BlockAssignment] Started assigning block shifts. This will take 3 steps to complete.
+[03/24/2023-18:14:12] [TRT] [I] [BlockAssignment] Algorithm ShiftNTopDown took 0.031866ms to assign 3 blocks to 3 nodes requiring 792576 bytes.
+[03/24/2023-18:14:12] [TRT] [V] Total number of blocks in optimized block assignment: 3
+[03/24/2023-18:14:12] [TRT] [I] Total Activation Memory: 792576
+[03/24/2023-18:14:12] [TRT] [V] Total number of generated kernels selected for the engine: 0
+[03/24/2023-18:14:12] [TRT] [V] Disabling unused tactic source: EDGE_MASK_CONVOLUTIONS
+[03/24/2023-18:14:12] [TRT] [V] Disabling unused tactic source: JIT_CONVOLUTIONS
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublas as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublasLt as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuBLAS/cuBLASLt: CPU +0, GPU +8, now: CPU 1835, GPU 15768 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuDNN: CPU +1, GPU +10, now: CPU 1836, GPU 15778 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Engine generation completed in 2.03973 seconds.
+[03/24/2023-18:14:12] [TRT] [V] Deleting timing cache: 8 entries, served 6 hits since creation.
+[03/24/2023-18:14:12] [TRT] [V] Engine Layer Information:
+Layer(Reformat): Reformatting CopyNode for Input Tensor 0 to (Unnamed Layer* 0) [PluginV2DynamicExt], Tactic: 0x00000000000003e8, inputT (Half[-1,-1,768]) -> Reformatted Input Tensor 0 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[-1,-1,768])
+Layer(Reformat): Reformatting CopyNode for Input Tensor 1 to (Unnamed Layer* 0) [PluginV2DynamicExt], Tactic: 0x00000000000003e8, gemmaT (Half[1,1,768]) -> Reformatted Input Tensor 1 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[1,1,768])
+Layer(Reformat): Reformatting CopyNode for Input Tensor 2 to (Unnamed Layer* 0) [PluginV2DynamicExt], Tactic: 0x00000000000003e8, betaT (Half[1,1,768]) -> Reformatted Input Tensor 2 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[1,1,768])
+Layer(PluginV2): (Unnamed Layer* 0) [PluginV2DynamicExt], Tactic: 0x0000000000000000, Reformatted Input Tensor 0 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[-1,-1,768]), Reformatted Input Tensor 1 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[1,1,768]), Reformatted Input Tensor 2 to (Unnamed Layer* 0) [PluginV2DynamicExt] (Float[1,1,768]) -> (Unnamed Layer* 0) [PluginV2DynamicExt]_output_0 (Float[-1,-1,768])
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in building engine: CPU +0, GPU +0, now: CPU 0, GPU 0 (MiB)
+[03/24/2023-18:14:12] [TRT] [I] Loaded engine size: 0 MiB
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublas as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublasLt as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuBLAS/cuBLASLt: CPU +0, GPU +10, now: CPU 1835, GPU 15754 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuDNN: CPU +0, GPU +8, now: CPU 1835, GPU 15762 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Deserialization required 13000 microseconds.
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in engine deserialization: CPU +0, GPU +0, now: CPU 0, GPU 0 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublas.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublas as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcublasLt.so.11
+[03/24/2023-18:14:12] [TRT] [V] Using cublasLt as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuBLAS/cuBLASLt: CPU +0, GPU +10, now: CPU 1835, GPU 15754 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Trying to load shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Loaded shared library libcudnn.so.8
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as plugin tactic source
+[03/24/2023-18:14:12] [TRT] [V] Using cuDNN as core library tactic source
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] Init cuDNN: CPU +0, GPU +8, now: CPU 1835, GPU 15762 (MiB)
+[03/24/2023-18:14:12] [TRT] [V] Total per-runner device persistent memory is 0
+[03/24/2023-18:14:12] [TRT] [V] Total per-runner host persistent memory is 224
+[03/24/2023-18:14:12] [TRT] [V] Allocated activation device memory of size 792576
+[03/24/2023-18:14:12] [TRT] [I] [MemUsageChange] TensorRT-managed allocation in IExecutionContext creation: CPU +0, GPU +0, now: CPU 0, GPU 0 (MiB)
+[03/24/2023-18:14:12] [TRT] [W] CUDA lazy loading is not enabled. Enabling it can significantly reduce device memory usage. See `CUDA_MODULE_LOADING` in https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#env-vars
+testLayerNormPlugin.py:106: DeprecationWarning: Use set_input_shape instead.
+  context.set_binding_shape(0, [nBS,nSL,nEmbedding])
+testLayerNormPlugin.py:112: DeprecationWarning: Use get_tensor_dtype instead.
+  print(engine.get_tensor_mode(engine.get_tensor_name(i)).name, engine.get_binding_dtype(i),engine.get_binding_shape(i),context.get_binding_shape(i))
+testLayerNormPlugin.py:112: DeprecationWarning: Use get_tensor_shape instead.
+  print(engine.get_tensor_mode(engine.get_tensor_name(i)).name, engine.get_binding_dtype(i),engine.get_binding_shape(i),context.get_binding_shape(i))
+testLayerNormPlugin.py:128: DeprecationWarning: Use get_tensor_shape instead.
+  bufferH.append(np.empty(context.get_binding_shape(3), dtype=trt.nptype(engine.get_binding_dtype(3))))
+testLayerNormPlugin.py:128: DeprecationWarning: Use get_tensor_dtype instead.
+  bufferH.append(np.empty(context.get_binding_shape(3), dtype=trt.nptype(engine.get_binding_dtype(3))))
+Binding all? Yes
+INPUT DataType.HALF (-1, -1, 768) (4, 64, 768)
+INPUT DataType.HALF (1, 1, 768) (1, 1, 768)
+INPUT DataType.HALF (1, 1, 768) (1, 1, 768)
+OUTPUT DataType.FLOAT (-1, -1, 768) (4, 64, 768)
+check result:
+===> gpu sum:  99031.875
+===> cpu sum: 99032.03
+False max diff=0.003003835678100586
+===> using FP32 kernel
